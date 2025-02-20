@@ -20,7 +20,7 @@
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 350px;
     text-align: center;
 }
 
@@ -75,13 +75,22 @@ li {
     color: gray;
 }
 
-.delete-btn {
-    background: red;
+.actions {
+    display: flex;
+    gap: 5px;
+}
+
+.edit-btn, .delete-btn {
+    background: #007bff;
     color: white;
     border: none;
     padding: 5px;
     cursor: pointer;
     border-radius: 5px;
+}
+
+.delete-btn {
+    background: red;
 }
 
     </style>
@@ -95,8 +104,9 @@ li {
         </div>
         <ul id="taskList"></ul>
     </div>
+
     <script>
-        function addTask() {
+    function addTask() {
     let taskInput = document.getElementById("taskInput");
     let taskText = taskInput.value.trim();
 
@@ -108,9 +118,13 @@ li {
     let taskList = document.getElementById("taskList");
 
     let li = document.createElement("li");
+
     li.innerHTML = `
-        <span onclick="toggleTask(this)">${taskText}</span>
-        <button class="delete-btn" onclick="removeTask(this)">X</button>
+        <span class="task-text" onclick="toggleTask(this)">${taskText}</span>
+        <div class="actions">
+            <button class="edit-btn" onclick="editTask(this)">Edit</button>
+            <button class="delete-btn" onclick="removeTask(this)">X</button>
+        </div>
     `;
 
     taskList.appendChild(li);
@@ -121,8 +135,18 @@ function toggleTask(task) {
     task.classList.toggle("completed");
 }
 
+function editTask(button) {
+    let li = button.parentElement.parentElement;
+    let taskSpan = li.querySelector(".task-text");
+
+    let newText = prompt("Edit your task:", taskSpan.textContent);
+    if (newText !== null && newText.trim() !== "") {
+        taskSpan.textContent = newText;
+    }
+}
+
 function removeTask(button) {
-    button.parentElement.remove();
+    button.parentElement.parentElement.remove();
 }
 
     </script>
